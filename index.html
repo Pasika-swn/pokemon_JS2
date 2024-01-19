@@ -59,12 +59,16 @@
       
       // End Scene
       const endMessageDisplay = document.getElementById("end-message")
+      const restartEndGameButton = document.getElementById("restart-button")
 
       let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
       let counter = 10
 
       const endGamePlay = (displayText) => {
         endMessageDisplay.innerText = displayText
+
+        // alert(displayText) //optional whether you wanna show alert pop-up.
+
         playGameScene.classList.add('hidden')
         playGameScene.classList.remove('play-center')
         endGameScene.classList.remove('hidden')
@@ -168,6 +172,15 @@
         playGameScene.classList.add('hidden')
         playGameScene.classList.remove('play-center')
         startGameScene.classList.remove("hidden");
+      })
+
+      
+      restartEndGameButton.addEventListener('click', () => {
+        endGameScene.classList.add('hidden')
+        playGameScene.classList.remove("hidden");
+        playGameScene.classList.add("play-center");
+        
+        startGamePlay()
       })
 
 
