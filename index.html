@@ -35,7 +35,6 @@
       </div>
     </section>
 
-
     <!-- JS SCRIPT -->
     <script>
       //selection
@@ -44,12 +43,15 @@
       const endGameScene = document.getElementById("end-game");
 
       const startButton = document.getElementById("start-button");
+      const questionDisplay = document.getElementById("question")
+
+      let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
 
       //FN API
       const startGamePlay = async () => {
           try {
             const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
-            
+
             if (!response.ok) {
               throw new Error('ไม่สามารถดึงข้อมูลออกมาได้') //ถ้าเข้าบรรทัดนี้จะ break ออกไปที่ catch(error) เลย
             }
@@ -57,16 +59,22 @@
             const responseJSON = await response.json()
             const randomIndex = Math.floor(Math.random() * responseJSON.results.length)
 
-            const selectedAnswer = responseJSON.results[randomIndex].name
+            let selectedAnswer = responseJSON.results[randomIndex].name
+            Answer = selectedAnswer
+
+            selectedAnswer = selectedAnswer.replace(/./g, '_') //แทนทุกตัวอักษรด้วย _ _ _
+
+            questionDisplay.innerText = selectedAnswer
 
             console.log('selectedAnswer', selectedAnswer) //ลองปริ้น
+            console.log('Answer', Answer)
 
           } catch (error) {
             console.log('error', error)
             alert('มีปัญหาขัดข้องจากการโหลดข้อมูลจ้าา')
           }
       }
-      
+
       //using 'addEventListener' จัดการปรับ DOM
       startButton.addEventListener("click", () => {
         // Start Scene
