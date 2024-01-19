@@ -55,6 +55,7 @@
       const answerButtonList = document.getElementById("answer-button")
       const counterDisplay = document.getElementById("counter")
 
+      const restartGameButton = document.getElementById("restartgame-button")
       
       // End Scene
       const endMessageDisplay = document.getElementById("end-message")
@@ -158,6 +159,11 @@
       });
 
 
+      restartGameButton.addEventListener('click', () => {
+        playGameScene.classList.add('hidden')
+        playGameScene.classList.remove('play-center')
+        startGameScene.classList.remove("hidden");
+      })
 
 
 
