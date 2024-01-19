@@ -53,8 +53,10 @@
       //Game-play scene
       const questionDisplay = document.getElementById("question")
       const answerButtonList = document.getElementById("answer-button")
+      const counterDisplay = document.getElementById("counter")
       
       let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
+      let counter = 10
       
       //STEP4:  สร้าง function สำหรับการเล่นเกม
       const generateAnswerList = () => {
@@ -65,6 +67,26 @@
           let button = document.createElement('button')
           button.innerText = letter
           answerButtonList.appendChild(button) //ต่อปุ่มลูกๆเข้าไป A-Z
+
+          button.addEventListener('click', (event) => {
+            let currentLetter = event.target.innerText.toLowerCase()
+            console.log('currentLetter', currentLetter)
+
+            let currentQuestion = questionDisplay.innerText.split('')
+
+            for (let i = 0; i < Answer.length; i++) {
+              if (currentLetter === Answer[i]) {
+                console.log('found at index', i)
+                currentQuestion[i] = currentLetter
+              }
+            }
+
+            questionDisplay.innerText = currentQuestion.join('') //array -> str //update โจทย์
+
+            event.target.disabled = true
+            counter -= 1
+            counterDisplay.innerText = counter
+          })
 
         }
       }
