@@ -55,8 +55,18 @@
       const answerButtonList = document.getElementById("answer-button")
       const counterDisplay = document.getElementById("counter")
       
+      // End Scene
+      const endMessageDisplay = document.getElementById("end-message")
+
       let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
       let counter = 10
+
+      const endGamePlay = (displayText) => {
+        endMessageDisplay.innerText = displayText
+        playGameScene.classList.add('hidden')
+        playGameScene.classList.remove('play-center')
+        endGameScene.classList.remove('hidden')
+      }
       
       //STEP4:  สร้าง function สำหรับการเล่นเกม
       const generateAnswerList = () => {
@@ -86,6 +96,10 @@
             event.target.disabled = true
             counter -= 1
             counterDisplay.innerText = counter
+
+            if (counter === 0) {
+              endGamePlay('Game Over~')
+            }
           })
 
         }
@@ -136,7 +150,6 @@
         //เริ่มเกมได้
         startGamePlay()
       });
-      // End Scene
 
 
 
