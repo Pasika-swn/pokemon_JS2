@@ -54,6 +54,7 @@
       const questionDisplay = document.getElementById("question")
       const answerButtonList = document.getElementById("answer-button")
       const counterDisplay = document.getElementById("counter")
+
       
       // End Scene
       const endMessageDisplay = document.getElementById("end-message")
@@ -91,7 +92,8 @@
               }
             }
 
-            questionDisplay.innerText = currentQuestion.join('') //array -> str //update โจทย์
+            currentAnswerQuestion = currentQuestion.join('')
+            questionDisplay.innerText = currentAnswerQuestion //array -> str //update โจทย์
 
             event.target.disabled = true
             counter -= 1
@@ -99,6 +101,10 @@
 
             if (counter === 0) {
               endGamePlay('Game Over~')
+            }
+
+            if (currentAnswerQuestion === Answer) {
+              endGamePlay(`Successful! Answer is '${Answer}'`)
             }
           })
 
