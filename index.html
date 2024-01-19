@@ -136,6 +136,11 @@
             console.log('selectedAnswer', selectedAnswer) //ลองปริ้น
             console.log('Answer', Answer)
 
+            //when you press reset-game button --> reset counter && reset keyboard(answerButtonList)
+            counter = 10
+            answerButtonList.innerHTML = ''
+            counterDisplay.innerText = counter
+
             generateAnswerList()
 
           } catch (error) {
