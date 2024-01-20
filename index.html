@@ -75,10 +75,16 @@
         playGameScene.classList.add('hidden')
         playGameScene.classList.remove('play-center')
         endGameScene.classList.remove('hidden')
+
+        localStorage.clear()
+        state = ''
+        answerList = []
       }
 
       //STEP4:  สร้าง function สำหรับการเล่นเกม
       const generateAnswerList = () => {
+        answerButtonList.innerHTML = ''
+
 
         console.log('answerList', answerList)
 
@@ -141,8 +147,9 @@
               let selectedAnswer = localStorage.getItem('question')
               questionDisplay.innerText = selectedAnswer
 
-              let counter = localStorage.getItem('counter')
-              counterDisplay.innerText = counter
+              let currentCounter = localStorage.getItem('counter')
+              counterDisplay.innerText = currentCounter
+              counter = currentCounter
 
               let answerListText = localStorage.getItem('answerList')
               if (answerListText) {
@@ -176,14 +183,14 @@
             console.log('Answer', Answer)
 
             //save state
-            localStorage.setItem('storedAnswer', Answer) //('Answerz คือชื่อที่โชว์', Answer คือสตริงที่จะเก็บ(ตัวแปร))
+            localStorage.setItem('Answer', Answer) //('Answerz คือชื่อที่โชว์', Answer คือสตริงที่จะเก็บ(ตัวแปร))
             localStorage.setItem('state', state)
             localStorage.setItem('question', selectedAnswer)
             localStorage.setItem('counter', counter)
 
             //when you press reset-game button --> reset counter && reset keyboard(answerButtonList)
             counter = 10
-            answerButtonList.innerHTML = ''
+            // answerButtonList.innerHTML = ''
             counterDisplay.innerText = counter
 
             generateAnswerList()
@@ -212,7 +219,10 @@
       restartGameButton.addEventListener('click', () => {
         playGameScene.classList.add('hidden')
         playGameScene.classList.remove('play-center')
-        startGameScene.classList.remove("hidden");
+        startGameScene.classList.remove("hidden")
+
+        localStorage.clear()
+        location.reload() //reload web again
       })
 
 
