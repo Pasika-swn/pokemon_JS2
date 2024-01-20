@@ -64,6 +64,7 @@
       let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
       let state = '' //เรากำลังเล่นอยู่ไหม
       let counter = 10
+      let answerList = [] 
 
 
       const endGamePlay = (displayText) => {
@@ -78,6 +79,9 @@
 
       //STEP4:  สร้าง function สำหรับการเล่นเกม
       const generateAnswerList = () => {
+
+        console.log('answerList', answerList)
+
         for (let i = 0; i<26; i++) {
           // let letter = 'A'.charCodeAt(0)
           let letter = String.fromCharCode('A'.charCodeAt(0) + i) //ASCII A-Z
@@ -85,6 +89,10 @@
           let button = document.createElement('button')
           button.innerText = letter
           answerButtonList.appendChild(button) //ต่อปุ่มลูกๆเข้าไป A-Z
+
+          if (answerList.includes(letter.toLowerCase())) {
+            button.disabled = true
+          }
 
           button.addEventListener('click', (event) => {
             let currentLetter = event.target.innerText.toLowerCase()
@@ -106,7 +114,10 @@
             event.target.disabled = true
             counter -= 1
             counterDisplay.innerText = counter
+            answerList.push(currentLetter) //add to array
+
             localStorage.setItem('counter', counter) //update every round
+            localStorage.setItem('answerList', JSON.stringify(answerList)) // JSON.stringify() => convert array to string
 
 
             if (counter === 0) {
@@ -132,6 +143,11 @@
 
               let counter = localStorage.getItem('counter')
               counterDisplay.innerText = counter
+
+              let answerListText = localStorage.getItem('answerList')
+              if (answerListText) {
+                answerList = JSON.parse(answerListText) //convert string to JSON-obj which is a list
+              }
 
               generateAnswerList()
 
