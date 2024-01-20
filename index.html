@@ -56,13 +56,15 @@
       const counterDisplay = document.getElementById("counter")
 
       const restartGameButton = document.getElementById("restartgame-button")
-      
+
       // End Scene
       const endMessageDisplay = document.getElementById("end-message")
       const restartEndGameButton = document.getElementById("restart-button")
 
       let Answer = '' //เอาไว้เก็บคำตอบไม่ให้หาย global var
+      let state = '' //เรากำลังเล่นอยู่ไหม
       let counter = 10
+
 
       const endGamePlay = (displayText) => {
         endMessageDisplay.innerText = displayText
@@ -73,7 +75,7 @@
         playGameScene.classList.remove('play-center')
         endGameScene.classList.remove('hidden')
       }
-      
+
       //STEP4:  สร้าง function สำหรับการเล่นเกม
       const generateAnswerList = () => {
         for (let i = 0; i<26; i++) {
@@ -98,11 +100,14 @@
             }
 
             currentAnswerQuestion = currentQuestion.join('')
+            localStorage.setItem('question', currentAnswerQuestion)
             questionDisplay.innerText = currentAnswerQuestion //array -> str //update โจทย์
 
             event.target.disabled = true
             counter -= 1
             counterDisplay.innerText = counter
+            localStorage.setItem('counter', counter) //update every round
+
 
             if (counter === 0) {
               endGamePlay('Game Over~')
@@ -120,6 +125,18 @@
       //STEP3: FN API
       const startGamePlay = async () => {
         try {
+            if(state === 'playing') {
+              Answer = localStorage.getItem('Answer')
+              let selectedAnswer = localStorage.getItem('question')
+              questionDisplay.innerText = selectedAnswer
+
+              let counter = localStorage.getItem('counter')
+              counterDisplay.innerText = counter
+
+              generateAnswerList()
+
+              return false
+            }
             // 2. มีการเรียกใช้ API จาก https://pokeapi.co/ เพื่อนำข้อมูลชื่อ pokemon มาใช้ (Async API)
             const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
 
@@ -132,13 +149,21 @@
 
             let selectedAnswer = responseJSON.results[randomIndex].name
             Answer = selectedAnswer
+            state = 'playing'
 
             selectedAnswer = selectedAnswer.replace(/./g, '_') //แทนทุกตัวอักษรด้วย _ _ _
+
 
             questionDisplay.innerText = selectedAnswer
 
             console.log('selectedAnswer', selectedAnswer) //ลองปริ้น
             console.log('Answer', Answer)
+
+            //save state
+            localStorage.setItem('storedAnswer', Answer) //('Answerz คือชื่อที่โชว์', Answer คือสตริงที่จะเก็บ(ตัวแปร))
+            localStorage.setItem('state', state)
+            localStorage.setItem('question', selectedAnswer)
+            localStorage.setItem('counter', counter)
 
             //when you press reset-game button --> reset counter && reset keyboard(answerButtonList)
             counter = 10
@@ -160,7 +185,7 @@
         // Game Play Scene
         playGameScene.classList.remove("hidden");
         playGameScene.classList.add("play-center");
-        
+
 
 
         //เริ่มเกมได้
@@ -174,16 +199,21 @@
         startGameScene.classList.remove("hidden");
       })
 
-      
+
       restartEndGameButton.addEventListener('click', () => {
         endGameScene.classList.add('hidden')
         playGameScene.classList.remove("hidden");
         playGameScene.classList.add("play-center");
-        
+
         startGamePlay()
       })
 
-
+      window.onload = () => {
+        state = localStorage.getItem('state')
+        if (state === 'playing') {
+          startButton.click()
+        }
+      }
 
       // save state
 
